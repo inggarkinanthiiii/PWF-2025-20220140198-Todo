@@ -4,30 +4,31 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
+class CreateTodosTable extends Migration
 {
     /**
-     * Jalankan migration.
+     * Run the migrations.
+     *
+     * @return void
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('todos', function (Blueprint $table) {
-            $table->id(); // Primary key
-            $table->foreignId('user_id')->nullable()->constrained()->onDelete('cascade'); // Kolom user_id bisa null
-            $table->string('title'); // Kolom title
-            $table->boolean('is_done')->default(false); // Status selesai atau tidak
-            $table->timestamps(); // Kolom created_at dan updated_at
-
-              // Jika ingin menghubungkan ke tabel users, tambahkan foreign key
-    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
+            $table->id(); // Kolom id utama
+            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Foreign key user_id yang terhubung ke tabel users
+            $table->string('title'); // Kolom judul todo
+            $table->boolean('status')->default(0); // Kolom status, default 0 (belum selesai)
+            $table->timestamps(); // Kolom timestamps (created_at, updated_at)
         });
     }
 
     /**
-     * Undo migration.
+     * Reverse the migrations.
+     *
+     * @return void
      */
-    public function down(): void
+    public function down()
     {
-        Schema::dropIfExists('todos');
+        Schema::dropIfExists('todos'); // Hapus tabel todos saat migrasi dibatalkan
     }
-};
+}

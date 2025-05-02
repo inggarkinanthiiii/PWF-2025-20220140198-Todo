@@ -1,5 +1,4 @@
-<?php
-
+// database/seeders/TodoSeeder.php
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -9,6 +8,14 @@ class TodoSeeder extends Seeder
 {
     public function run()
     {
-        Todo::factory()->count(500)->create();
+        Todo::create([
+            'title' => 'Ngopi Kador',
+            'is_done' => false,
+        ]);
+
+        Todo::create([
+            'title' => 'Tempora Tempore Alias Velit Excepturi',
+            'is_done' => false,
+        ]);
     }
 }

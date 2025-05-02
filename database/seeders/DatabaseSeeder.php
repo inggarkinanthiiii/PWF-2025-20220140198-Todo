@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
         User::factory(100)->create();
 
         // Buat user admin
-        User::factory()->create([
+        $admin = User::factory()->create([
             'name' => 'Admin',
             'email' => 'admin@admin.com',
             'email_verified_at' => now(),
@@ -28,12 +28,12 @@ class DatabaseSeeder extends Seeder
             'is_admin' => true,
         ]);
 
-        // Ambil user_id yang ada
+        // Ambil semua user_id yang ada
         $userIds = User::pluck('id');
 
-        // Jika ada user, buat Todo
+        // Jika ada user, buat 500 Todo dengan user_id yang dipilih secara acak
         if ($userIds->isNotEmpty()) {
-            Todo::factory(100)->create([
+            Todo::factory(500)->create([
                 'user_id' => $userIds->random(),
             ]);
         } else {
