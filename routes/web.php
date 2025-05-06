@@ -17,6 +17,8 @@ Route::get('/dashboard', function () {
 
 // Grup route untuk user yang login
 Route::middleware(['auth', 'verified'])->group(function () {
+    // 🔹 User - hanya bisa melihat daftar user (misalnya untuk role user biasa)
+    Route::get('/users', [UserController::class, 'index'])->name('user.index');
 
     // 🔹 Rute Profile
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -28,25 +30,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::patch('/todo/{todo}/complete', [TodoController::class, 'complete'])->name('todo.complete');
     Route::patch('/todo/{todo}/uncomplete', [TodoController::class, 'uncomplete'])->name('todo.uncomplete');
     Route::delete('/todo/completed', [TodoController::class, 'destroyCompleted'])->name('todo.deleteallcompleted');
+});
 
-    // 🔹 Rute User
-    Route::prefix('user')->group(function () {
-        Route::get('/', [UserController::class, 'index'])->name('user.index');
-        Route::get('/create', [UserController::class, 'create'])->name('user.create');
-        Route::post('/', [UserController::class, 'store'])->name('user.store');
-        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('user.edit');
-        Route::patch('/{user}', [UserController::class, 'update'])->name('user.update');
-        Route::delete('/{user}', [UserController::class, 'destroy'])->name('user.destroy');
-        Route::resource('user', UserController::class);
+// Grup route untuk user yang memiliki akses admin
+Route::middleware(['auth', 'admin'])->prefix('admin/users')->name('admin.users.')->group(function () {
+    // 🔸 Kelola user: index, create, store, edit, update, destroy
+    Route::get('/', [UserController::class, 'adminIndex'])->name('index');
+    Route::get('/create', [UserController::class, 'create'])->name('create');
+    Route::post('/', [UserController::class, 'store'])->name('store');
+    Route::get('/{user}/edit', [UserController::class, 'edit'])->name('edit');
+    Route::put('/{user}', [UserController::class, 'update'])->name('update');
+    Route::delete('/{user}', [UserController::class, 'destroy'])->name('destroy');
 
-
-        // 🔸 Make / Remove Admin
-        Route::patch('/{user}/makeadmin', [UserController::class, 'makeAdmin'])->name('user.makeAdmin');
-        Route::patch('/{user}/removeadmin', [UserController::class, 'removeAdmin'])->name('user.removeAdmin');
-
-        // Menambahkan route yang Anda berikan (perhatikan penempatannya)
-        // Route::get('/user/makeadmin', [UserController::class, 'makeAdmin'])->name('user.makeadmin');
-    });
+    // 🔸 Tambah / Hapus hak admin
+    Route::patch('/{user}/makeadmin', [UserController::class, 'makeAdmin'])->name('makeAdmin');
+    Route::patch('/{user}/removeadmin', [UserController::class, 'removeAdmin'])->name('removeAdmin');
 });
 
 // Route tambahan untuk otentikasi
