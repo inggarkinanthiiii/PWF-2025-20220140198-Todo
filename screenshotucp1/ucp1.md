@@ -6,7 +6,7 @@
 ![Todo Page](todo_page.png)
 
 ### Browser Category
-![Category Page](scategory_page.png)
+![Category Page](category_page.png)
 
 ### Browser User
 ![User Page](user_page.png)
