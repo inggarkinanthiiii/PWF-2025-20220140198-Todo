@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\TodoController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CategoryController;
 
 // Halaman awal
 Route::get('/', function () {
@@ -43,6 +44,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // 🔸 Make / Remove Admin
         Route::patch('/{user}/makeadmin', [UserController::class, 'makeAdmin'])->name('user.makeAdmin');
         Route::patch('/{user}/removeadmin', [UserController::class, 'removeAdmin'])->name('user.removeAdmin');
+        Route::resource('category', CategoryController::class);
+        Route::get('/categories/create', [CategoryController::class, 'create'])->name('categories.create');
+        Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+
 
         // Menambahkan route yang Anda berikan (perhatikan penempatannya)
         // Route::get('/user/makeadmin', [UserController::class, 'makeAdmin'])->name('user.makeadmin');

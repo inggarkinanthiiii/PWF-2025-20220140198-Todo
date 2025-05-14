@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\User;
+use App\Models\Category;
 
 class Todo extends Model
 {
@@ -16,6 +17,8 @@ class Todo extends Model
         'title',
         'user_id',
         'is_done',
+        'status',
+        'category_id', // Tambahkan category_id agar bisa diisi
     ];
 
     // Cast is_done menjadi boolean agar konsisten saat digunakan
@@ -30,4 +33,13 @@ class Todo extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relasi: Setiap Todo dimiliki oleh satu Category.
+     */
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Category::class);
+    }
+
 }
